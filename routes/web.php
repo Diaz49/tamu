@@ -227,6 +227,10 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/tamu-edit/{id}', [TamuController::class, 'edit']);
     Route::put('/tamu-edit/{id}', [TamuController::class, 'update']);
     Route::get('/tamu-delete/{tamu}', [TamuController::class, 'delete']);
+
+    // Route::get('/get-guru-username', 'TamuController@create')->name('get_guru_user');
+    Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
+    // Route::get('/search-by-username/{username}', [TamuController::class, 'searchByUsername']);
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
@@ -236,10 +240,15 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
 });
 
 //==========================================================================================
-    // ==============[ D a t a - T a m u ]===============
+    // ==============[ D a f t a r - T a m u ]===============
 
-    Route::get('/humas/tamu', [TamuController::class, 'create']);
-    Route::post('/humas/tamu', [TamuController::class, 'kirim']);
+    Route::get('/humas/daftar-tamu', [TamuController::class, 'daftar'])->name('humas.daftar-tamu'); 
+    Route::post('/humas/datar-tamu', [TamuController::class, 'store'])->name('humas.kirim-tamu');
+
+    // Kerja Sama 
+
+    Route::get('/kerjasama-mou',[KerjaSamaController::class, 'lihat'])->name('kerjasama.lihat');
+
 
 // Route::middleware(['userRole:admin'])->group(function(){
 //     Route::get('/Tamu');
@@ -251,6 +260,4 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
 
 // Route::get('/data-tamu', [TamuController::class, 'show']);
 
- // Kerja Sama 
-
- Route::get('/kerjasama-mou',[KerjaSamaController::class, 'lihat'])->name('kerjasama.lihat');
+ 

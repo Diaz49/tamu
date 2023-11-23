@@ -41,7 +41,7 @@
 </head>
 
 <body class="bg-gray-200">
-    @include('components.navbar-tamu')
+    {{-- @include('components.navbar-tamu') --}}
     @include('sweetalert::alert')
     <main class="main-content  mt-0 center">
         <!-- <div class="page-header align-items-start min-vh-100"
@@ -94,6 +94,17 @@
                                             class="btn bg-gradient-primary w-100 my-3 mb-2">MASUK</button>
                                     </div>
                                 </form>
+                                    <div>
+                                        <style>
+                                            .teks-style{
+                                                font-size: 18px;
+                                                font-family: 'italic', Times, serif;
+                                            }
+                                        </style>
+                                        <a href="{{ route('humas.daftar-tamu') }}" class="teks-style" style="text-decoration-line: initial;" >
+                                            Silahkan klik untuk Tamu
+                                        </a>
+                                    </div>
                             </div>
                         </div>
                     </div>

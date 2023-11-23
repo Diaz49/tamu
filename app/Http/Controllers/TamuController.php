@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tamu;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -10,15 +11,38 @@ use Illuminate\Http\Request;
 class TamuController extends Controller 
 {
     
+    // ==============[ Daftar-tamu via Admin ]===============
+
+    // Untuk Role
+    public function getUsernamesByRole($role){
+    
+    $usernames = User::where('role', $role)->pluck('username')->toArray();
+    return response()->json($usernames);
+    
+    }
+
     public function create(){
         // return view('pages.humas.tamu')->with('title', 'tamu');
         // dd(Tamu::get());
+
+        // $usernames = User::where('role', 'guru')->pluck('username')->toArray();
+        // return response()->json($usernames);
+        // return response();
+
+        $userRoles = User::select('role')->distinct()->get();
+        $namaUserGuru = User::select('username')->where('role','guru')->get();
+        $namaUserSiswa = User::select('username')->where('role','siswa')->get();
+
         return view('pages.humas.tamu',[
             'title' =>  "tamu",
+            'userRoles' => $userRoles,
+            'namaUserGuru' => $namaUserGuru,
+            'namaUserSiswa' => $namaUserSiswa,
             'tamu'=> Tamu::get(),
-            
+            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
         ]);
     }
+    
     public function kirim(Request $request){
 
         $tamu = new Tamu();
@@ -30,9 +54,25 @@ class TamuController extends Controller
         $tamu->save();
         
         return view('pages.humas.tamu',[
-            'title'=>"tamu"
+            'title'=>"tamu",
+            'userRoles' => User::select('role')->distinct()->get(),
+            'namaUserGuru' => User::select('username')->where('role', 'guru')->get(),
+            'namaUserSiswa' => User::select('username')->where('role','siswa')->get(),
+            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
         ]);
+
+    //     // Ambil opsi yang dipilih
+    //     $selectedOption = Option::findOrFail($request->role);
+
+    //     // Pastikan opsi yang dipilih bukan "admin"
+    //     if ($selectedOption->name === 'admin') {
+    //      return response()->json(['error' => 'Anda tidak dapat memilih opsi "admin"'], 422);
+    // }
+
     }
+
+    // ==============[ Data - tamu ]===============
+
     public function index() {
 
         // dd(Tamu::get());
@@ -52,6 +92,7 @@ class TamuController extends Controller
         return view('pages.humas.tamu-edit', [
             'tamu' => $tamu,
             'tujuans' => ['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa'],
+            // 'tujuans' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
             // 'title' => 'tamu-edit'
         ])->with('title', 'Update Data Tamu');
      }
@@ -93,8 +134,45 @@ class TamuController extends Controller
         
      }
 
+     // ==============[ Daftar-tamu dari login ]===============
+   
+     public function daftar(){
+        // return view('pages.humas.tamu')->with('title', 'tamu');
+        // dd(Tamu::get());
 
-     // ==============[ D a t a - cek]===============
+        $userRoles = User::select('role')->distinct()->get();
+        // $namauser = User::select('username')->where('role','guru')->get();
+
+        return view( 'pages.humas.daftar-tamu' ,[
+            // 'title' =>  "tamu",
+            'userRoles' => $userRoles,
+            // 'namauser' => $namauser,
+            'tamu'=> Tamu::get(),
+            
+        ]);
+    }
+    public function store(Request $request){
+
+        $daftar_tamu = new Tamu();
+
+        $daftar_tamu->nama = $request->namaTamu;
+        $daftar_tamu->alamat = $request->alamatTamu;
+        $daftar_tamu->Opsi_Tujuan = $request->Opsi;
+        $daftar_tamu->Keterangan = $request->keteranganTamu;
+        $daftar_tamu->save();
+        
+        return view('pages/humas/daftar-tamu',[
+            // 'title'=>"tamu",
+            'userRoles' => User::select('role')->distinct()->get(),
+            // 'namauser' => User::select('username')->where('role', 'guru')->get(),
+        ]);
+    }
+
+
+}
+
+
+ // ==============[ D a t a - cek]===============
     // public function index(){
     //     $tamu_table = Tamu::paginate(10);
     //     return response()->json([
@@ -134,4 +212,3 @@ class TamuController extends Controller
     //         'message' => 'customer deleted'
     //     ]);
     // }
-}
