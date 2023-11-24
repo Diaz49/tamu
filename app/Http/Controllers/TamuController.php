@@ -88,11 +88,12 @@ class TamuController extends Controller
      public function edit($id)
      {
         // dd($tamu );
+        $userRoles = User::select('role')->distinct()->get();
         $tamu = Tamu::find($id);
         return view('pages.humas.tamu-edit', [
             'tamu' => $tamu,
-            'tujuans' => ['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa'],
-            // 'tujuans' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
+            // 'tujuans' => ['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa'],
+            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
             // 'title' => 'tamu-edit'
         ])->with('title', 'Update Data Tamu');
      }
@@ -108,7 +109,9 @@ class TamuController extends Controller
         
 
         return view('pages.humas.data-tamu',[
-            'tamus' => Tamu::get()
+            'tamus' => Tamu::get(),
+            'userRoles' => User::select('role')->distinct()->get(),
+            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
         ])->with('title', 'update sukses');
         
         // return view('pages.humas.tamu-edit', [
@@ -141,6 +144,7 @@ class TamuController extends Controller
         // dd(Tamu::get());
 
         $userRoles = User::select('role')->distinct()->get();
+        $userRoles = User::select('role')->distinct()->where('role','!=','admin')->get();
         // $namauser = User::select('username')->where('role','guru')->get();
 
         return view( 'pages.humas.daftar-tamu' ,[
@@ -164,6 +168,7 @@ class TamuController extends Controller
         return view('pages/humas/daftar-tamu',[
             // 'title'=>"tamu",
             'userRoles' => User::select('role')->distinct()->get(),
+            'userRoles' => User::select('role')->distinct()->where('role','!=','admin')->get(),
             // 'namauser' => User::select('username')->where('role', 'guru')->get(),
         ]);
     }

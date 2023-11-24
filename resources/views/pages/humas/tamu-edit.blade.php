@@ -77,12 +77,15 @@
                                     <select class="form-select rounded-3 form-control-lg text-sm"
                                         aria-label="Default select example" name="Opsi" id="Opsi_Tujuan">
                                         <option selected> Pilih Tujuan </option>
-                                        @foreach ($tujuans as $tujuan)
+                                        @foreach ($userRoles as $r)
+                                            <option value="{{ $r->role }}">{{ $r->role }}</option>  
+                                        @endforeach
+                                        {{-- @foreach ($tujuans as $tujuan)
                                             <option value="{{ $tujuan }}"
                                                 @if ($form_input['Opsi_Tujuan'] == $tujuan) {{ 'selected' }} @endif>
                                                 {{ ucfirst($tujuan) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                             {{-- <option value="kepala sekolah" {{ $tamu->Opsi_Tujuan == 'kepala sekolah' ? 'Selected' : '' }}>Kepala Sekolah
                                             </option>
                                             <option value="wakil kepala sekolah" {{ $tamu->Opsi_Tujuan == 'wakil kepala sekolah' ? 'Selected' : '' }}>Wakil Kepala Sekolah
