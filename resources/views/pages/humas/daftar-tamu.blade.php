@@ -65,7 +65,7 @@
               outline: none;
           }
 
-          button {
+          /* button {
               width: 100%;
               padding: 10px;
               background-color: #007bff;
@@ -73,7 +73,7 @@
               border: none;
               border-radius: 5px;
               cursor: pointer;
-          }
+          } */
 
           button:hover {
               background-color: #0056b3;
@@ -118,7 +118,7 @@
                                   <label class="col-form-label"> Bertujuan Bertemu Dengan Siapa </label>
                                   <div class="row g-3 py-1">
                                     <div class="col-md-4">
-                                      <select id="opsi_tujuan" name="Opsi" class="form-select " aria-label="Default select example">
+                                      <select onchange="handleTujuan(this)" id="opsi_tujuan" name="Opsi" class="form-select " aria-label="Default select example">
                                         {{-- <option value="kepala sekolah">Kepala Sekolah</option>
                                         <option value="wakil kepala sekolah">Wakil Kepala Sekolah</option>
                                         <option value="guru">Guru</option>
@@ -163,10 +163,20 @@
                                   </div>
                                   </div>
                               </div>
-                              <div class="card-footer d-flex justify-content-end" style="gap: 10px">
-                                <Input type='submit' onclick="return confirm('apakah anda yakin data sudah benar ?')"
-                                value="Kirim" class="btn btn-primary" >
-                              </div>
+                              
+                                <div class="card-footer d-flex justify-content-end" style="gap: 10px">
+                                  <a href="{{ route('login') }}" type="button" class="btn btn-danger text-sm rounded-3"
+                                    style="margin-bottom: 0;">
+                                    <i class="fa fa-arrow-left"></i> Kembali
+                                  </a>
+                                  <button type="submit" onclick="return confirm('Apakah anda yakin data sudah benar?')"
+                                    class="btn btn-primary text-sm rounded-3 mr-2" style="margin-bottom: 0;">
+                                   <i class="fa fa-save"></i> Kirim
+                                  </button>
+                                {{-- <Input type='submit' onclick="return confirm('apakah anda yakin data sudah benar ?')"
+                                value="Kirim" class="btn btn-primary" > --}}
+                                </div>
+                              
                           </form>
                         </main>
                       </div>
@@ -176,5 +186,57 @@
 </div>
 </body>
 </html>
+<script>
+  const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
+  const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');
+
+  const handleTujuan = async (e) => {
+    try {
+      const res = await fetch(`/get-username-by-role/${e.value}`);
+      const result = await res.json();
+      console.log(result);
+
+      let kontenHtml = '';
+
+      result.forEach((username) => {
+        kontenHtml += `<option value="${username}">${username}</option>`;
+      });
+
+      opsi_lanjutan_dropdown.innerHTML = kontenHtml;
+    } catch (error) {
+      console.error('Error fetching or processing data:', error);
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function() {
+    console.log('Input terpanggil');
+    let searchString = this.value.toLowerCase();
+    let selectedRole = opsi_tujuan_dropdown.value;
+    let options = [];
+
+    @if ($namaUserGuru)
+      @foreach($namaUserGuru as $nuserGuru)
+        options.push({ role: 'guru', username: '{{ $nuserGuru->username }}' });
+      @endforeach
+    @endif
+
+    @if ($namaUserSiswa)
+      @foreach($namaUserSiswa as $nuserSiswa)
+        options.push({ role: 'siswa', username: '{{ $nuserSiswa->username }}' });
+      @endforeach
+    @endif
+
+    opsi_lanjutan_dropdown.innerHTML = '';
+
+    options
+      .filter(option => option.role === selectedRole && option.username.toLowerCase().includes(searchString))
+      .forEach(function (option) {
+        let optionElement = document.createElement('option');
+        optionElement.value = option.username; // Set nilai sesuai dengan apa yang ingin Anda gunakan
+        optionElement.text = option.username;
+        opsi_lanjutan_dropdown.appendChild(optionElement);
+      });
+  });
+</script> 
 
 {{-- @endsection --}}

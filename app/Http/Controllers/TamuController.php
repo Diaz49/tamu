@@ -140,17 +140,16 @@ class TamuController extends Controller
      // ==============[ Daftar-tamu dari login ]===============
    
      public function daftar(){
-        // return view('pages.humas.tamu')->with('title', 'tamu');
-        // dd(Tamu::get());
 
         $userRoles = User::select('role')->distinct()->get();
         $userRoles = User::select('role')->distinct()->where('role','!=','admin')->get();
-        // $namauser = User::select('username')->where('role','guru')->get();
+        $namaUserGuru = User::select('username')->where('role','guru')->get();
+        $namaUserSiswa = User::select('username')->where('role','siswa')->get();
 
         return view( 'pages.humas.daftar-tamu' ,[
-            // 'title' =>  "tamu",
             'userRoles' => $userRoles,
-            // 'namauser' => $namauser,
+            'namaUserGuru' => $namaUserGuru,
+            'namaUserSiswa' => $namaUserSiswa,
             'tamu'=> Tamu::get(),
             
         ]);
@@ -166,10 +165,10 @@ class TamuController extends Controller
         $daftar_tamu->save();
         
         return view('pages/humas/daftar-tamu',[
-            // 'title'=>"tamu",
             'userRoles' => User::select('role')->distinct()->get(),
+            'namaUserGuru' => User::select('username')->where('role', 'guru')->get(),
+            'namaUserSiswa' => User::select('username')->where('role','siswa')->get(),
             'userRoles' => User::select('role')->distinct()->where('role','!=','admin')->get(),
-            // 'namauser' => User::select('username')->where('role', 'guru')->get(),
         ]);
     }
 
