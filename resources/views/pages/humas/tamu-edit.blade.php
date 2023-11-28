@@ -81,11 +81,13 @@
                                             <option value="{{ $r->role }}">{{ $r->role }}</option>  
                                         @endforeach
                                         {{-- @foreach ($tujuans as $tujuan)
+
                                             <option value="{{ $tujuan }}"
                                                 @if ($form_input['Opsi_Tujuan'] == $tujuan) {{ 'selected' }} @endif>
                                                 {{ ucfirst($tujuan) }}
                                             </option>
                                         @endforeach --}}
+
                                             {{-- <option value="kepala sekolah" {{ $tamu->Opsi_Tujuan == 'kepala sekolah' ? 'Selected' : '' }}>Kepala Sekolah
                                             </option>
                                             <option value="wakil kepala sekolah" {{ $tamu->Opsi_Tujuan == 'wakil kepala sekolah' ? 'Selected' : '' }}>Wakil Kepala Sekolah

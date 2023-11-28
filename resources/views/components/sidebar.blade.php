@@ -124,8 +124,11 @@
                         Tamu</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a class="link-light rounded mb-1" href="{{ route('kerjasama.lihat') }}"> <i
-                                    class="material-icons opacity-10 ms-auto">groups</i> Kerja Sama ( MoU ) </a></li>
+
+                    {{-- <li><a class="link-light rounded mb-1" href="{{ route('kerjasama.lihat') }}"> <i --}}
+
+                    <li><a class="link-light rounded mb-1" href="/mou"> <i
+                        class="material-icons opacity-10 ms-auto">groups</i> Kerja Sama ( MoU ) </a></li>
                 </div>
             </li>
         @endif

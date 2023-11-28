@@ -28,6 +28,8 @@ use App\Models\Akademik;
 
 use App\Models\Tamu;
 use App\Http\Controllers\TamuController;
+use App\Models\Kerjasama;
+// use App\Http\Controllers\KerjaSamaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -227,10 +229,18 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/tamu-edit/{id}', [TamuController::class, 'edit']);
     Route::put('/tamu-edit/{id}', [TamuController::class, 'update']);
     Route::get('/tamu-delete/{tamu}', [TamuController::class, 'delete']);
-
     // Route::get('/get-guru-username', 'TamuController@create')->name('get_guru_user');
     Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
     // Route::get('/search-by-username/{username}', [TamuController::class, 'searchByUsername']);
+    
+    // ==============[ D a t a - K e r j a s a m a ]===============
+    Route::get('/mou',[KerjaSamaController::class, 'lihat']);
+    Route::get('/add-mou', [KerjaSamaController::class, 'create']);
+    Route::post('/add-mou', [KerjaSamaController::class, 'store']);
+    Route::get('/edit-mou/{id}', [KerjaSamaController::class, 'edit']);
+    Route::put('/edit-mou/{id}', [KerjaSamaController::class, 'update']);
+    Route::get('/delete-mou/{kerjasama}', [KerjaSamaController::class, 'destroy']);
+
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
@@ -248,7 +258,7 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
 
     // Kerja Sama 
 
-    Route::get('/kerjasama-mou',[KerjaSamaController::class, 'lihat'])->name('kerjasama.lihat');
+    // Route::get('/kerjasama-mou',[KerjaSamaController::class, 'lihat'])->name('kerjasama.lihat');
 
 
 // Route::middleware(['userRole:admin'])->group(function(){
@@ -260,5 +270,6 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
 
 
 // Route::get('/data-tamu', [TamuController::class, 'show']);
+
 
  

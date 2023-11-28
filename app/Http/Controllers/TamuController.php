@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tamu;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 
 
@@ -87,9 +88,11 @@ class TamuController extends Controller
   
      public function edit($id)
      {
-        // dd($tamu );
+        // dd($tamu);
+
         $userRoles = User::select('role')->distinct()->get();
         $tamu = Tamu::find($id);
+
         return view('pages.humas.tamu-edit', [
             'tamu' => $tamu,
             // 'tujuans' => ['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa'],
@@ -109,6 +112,7 @@ class TamuController extends Controller
         
 
         return view('pages.humas.data-tamu',[
+
             'tamus' => Tamu::get(),
             'userRoles' => User::select('role')->distinct()->get(),
             'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
@@ -130,10 +134,12 @@ class TamuController extends Controller
         
         $tamu->update(['deleted' => 1]);
         Tamu::find($tamu->id)->delete();
+
+        return redirect('/data-tamu')->with('toast_success', 'Data Tamu Berhasil di Hapus');
   
-        return view('pages.humas.data-tamu',[
-            'tamus' => Tamu::get(),
-        ])->with('title', 'Data Tamu Berhasil Dihapus');
+        // return view('pages.humas.data-tamu',[
+        //     'tamus' => Tamu::get(),
+        // ])->with('title', 'Data Tamu Berhasil Dihapus');
         
      }
 
@@ -215,4 +221,6 @@ class TamuController extends Controller
     //     return response()->json([
     //         'message' => 'customer deleted'
     //     ]);
+
     // }
+

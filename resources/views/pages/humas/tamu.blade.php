@@ -96,7 +96,58 @@
       </div>
   </div>
 </div>
+<script>
+  const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
+  const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');
 
+  const handleTujuan = async (e) => {
+    try {
+      const res = await fetch(`/get-username-by-role/${e.value}`);
+      const result = await res.json();
+      console.log(result);
+
+      let kontenHtml = '';
+
+      result.forEach((username) => {
+        kontenHtml += `<option value="${username}">${username}</option>`;
+      });
+
+      opsi_lanjutan_dropdown.innerHTML = kontenHtml;
+    } catch (error) {
+      console.error('Error fetching or processing data:', error);
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function() {
+    console.log('Input terpanggil');
+    let searchString = this.value.toLowerCase();
+    let selectedRole = opsi_tujuan_dropdown.value;
+    let options = [];
+
+    @if ($namaUserGuru)
+      @foreach($namaUserGuru as $nuserGuru)
+        options.push({ role: 'guru', username: '{{ $nuserGuru->username }}' });
+      @endforeach
+    @endif
+
+    @if ($namaUserSiswa)
+      @foreach($namaUserSiswa as $nuserSiswa)
+        options.push({ role: 'siswa', username: '{{ $nuserSiswa->username }}' });
+      @endforeach
+    @endif
+
+    opsi_lanjutan_dropdown.innerHTML = '';
+
+    options
+      .filter(option => option.role === selectedRole && option.username.toLowerCase().includes(searchString))
+      .forEach(function (option) {
+        let optionElement = document.createElement('option');
+        optionElement.value = option.username; // Set nilai sesuai dengan apa yang ingin Anda gunakan
+        optionElement.text = option.username;
+        opsi_lanjutan_dropdown.appendChild(optionElement);
+      });
+  });
+</script> 
 {{-- awal bikin script --}}
 {{-- <script>
 
@@ -353,57 +404,5 @@
     });
 </script> --}}
 
-<script>
-  const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
-  const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');
-
-  const handleTujuan = async (e) => {
-    try {
-      const res = await fetch(`/get-username-by-role/${e.value}`);
-      const result = await res.json();
-      console.log(result);
-
-      let kontenHtml = '';
-
-      result.forEach((username) => {
-        kontenHtml += `<option value="${username}">${username}</option>`;
-      });
-
-      opsi_lanjutan_dropdown.innerHTML = kontenHtml;
-    } catch (error) {
-      console.error('Error fetching or processing data:', error);
-    }
-  }
-
-  document.getElementById('searchInput').addEventListener('input', function() {
-    console.log('Input terpanggil');
-    let searchString = this.value.toLowerCase();
-    let selectedRole = opsi_tujuan_dropdown.value;
-    let options = [];
-
-    @if ($namaUserGuru)
-      @foreach($namaUserGuru as $nuserGuru)
-        options.push({ role: 'guru', username: '{{ $nuserGuru->username }}' });
-      @endforeach
-    @endif
-
-    @if ($namaUserSiswa)
-      @foreach($namaUserSiswa as $nuserSiswa)
-        options.push({ role: 'siswa', username: '{{ $nuserSiswa->username }}' });
-      @endforeach
-    @endif
-
-    opsi_lanjutan_dropdown.innerHTML = '';
-
-    options
-      .filter(option => option.role === selectedRole && option.username.toLowerCase().includes(searchString))
-      .forEach(function (option) {
-        let optionElement = document.createElement('option');
-        optionElement.value = option.username; // Set nilai sesuai dengan apa yang ingin Anda gunakan
-        optionElement.text = option.username;
-        opsi_lanjutan_dropdown.appendChild(optionElement);
-      });
-  });
-</script> 
 
 @endsection
